@@ -19,9 +19,7 @@
    </div>
    
 <br> 
-<p align="center">
-  <a href="https://www.livecoinwatch.com/tools/api#try"><style="height:100px">get API key</a>
-  <br>
+
     </div>
   
  
@@ -31,7 +29,7 @@
 - Raspberry Pi (running on Zero W and 4B)
 - [Pimoroni InkyPHAT display](https://shop.pimoroni.com/products/inky-phat?variant=12549254938707)
 - **Optional:** 3D printed case with [micro USB sockets](https://www.aliexpress.com/item/4000484202812.html)
-- Inky pHAT e-ink display
+- **Optional:** Cryptocurrency Ticker <a href="https://www.livecoinwatch.com/tools/api#try">get API key</a>
 
 
 ## Setup
