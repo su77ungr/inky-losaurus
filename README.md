@@ -43,13 +43,13 @@ curl https://get.pimoroni.com/inky | bash
 ```
 git clone https://github.com/su77ungr/inky-losaurus.git
 ```
-- Edit cron jobs
+- Edit cron jobs to auto-run script every three minutes
 ```
 crontab -e
 ```
 - Add the below entry (5 represents the frequency of the task e.g. updating to 1 will run every minute)
 ```
-*/5 * * * * python3 /home/pi/inky-losaurus/main.py
+*/3 * * * * python3 /home/pi/inky-losaurus/main.py
 ```
 Make sure the above path is pointing to the folder you've downloaded the code to
 
