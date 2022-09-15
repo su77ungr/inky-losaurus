@@ -5,20 +5,6 @@ from inky.auto import auto
 from inky import InkyPHAT
 from requests.structures import CaseInsensitiveDict
 
-def get_config(pihole_stats, time_info):
-
-    general_info = {
-    "pihole" : pihole_stats["status"],
-    "x-api-key" : "52d21667-5475-4a08-9ed2-2756e79470db" ,
-    "x-api-data" : '{"currency":"EUR","code":"XCH","meta":false}',
-    "topic" : "config file",
-    "version" : "Inky-losaurus V.0.1"
-    }
-    myJSON = json.dumps(general_info)
-    with open("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/config.json", "w") as jsonfile:
-        jsonfile.write(myJSON)
-        print("Config.json write successful")
-
 def read_config():
     with open("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/config.json", "r") as jsonfile:
         data = json.load(jsonfile) # Reading the file
@@ -40,20 +26,25 @@ def get_time():
     return time_info
 
 def get_crypto_ticker(data):
-    url="https://api.livecoinwatch.com/coins/single"
-    headers = CaseInsensitiveDict()
-    headers["content-type"]="application/json"
 
-    headers["x-api-key"] = data['x-api-key']
-    data = data['x-api-data']
-    resp = requests.post(url, headers=headers, data=data)
-    data = json.loads(resp.text)
-    parseData = json.dumps(resp.json())
-    priceObj = json.loads(parseData)
-    B = priceObj["rate"]
-    Z = round(B, 3)
-    current_price_info = str(Z)
-    print(current_price_info)
+    if data['ticker-enabled'] == "true":
+        url="https://api.livecoinwatch.com/coins/single"
+        headers = CaseInsensitiveDict()
+        headers["content-type"]="application/json"
+        headers["x-api-key"] = data['x-api-key']
+        data = data['x-api-data']
+        resp = requests.post(url, headers=headers, data=data)
+        data = json.loads(resp.text)
+        parseData = json.dumps(resp.json())
+        priceObj = json.loads(parseData)
+        B = priceObj["rate"]
+        Z = round(B, 3)
+        current_price_info = str(Z)
+        print(current_price_info)
+
+    else: 
+        current_price_info = str("\^o^/")
+    
     return current_price_info
 
 def get_pihole_stats(board_info):
@@ -71,25 +62,25 @@ def get_pihole_stats(board_info):
             pihole_stats[field] = "-----"
     return pihole_stats
 
-def get_compose_image(board_info, time_info, current_price_info, pihole_stats):
+def get_compose_image(board_info, time_info, current_price_info, pihole_stats, data):
     img = qrcode.make("http://"+ board_info["ip_address"] + "/admin")
     print(type(img))
     print(img.size)
     print(pihole_stats["ads_blocked_today"])
     # <class 'qrcode.image.pil.PilImage'>
     # (120, 120)
-    img.save('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/wow.png', dpi=(300,300))
+    img.save(data['directory-path'] + "/wow.png", dpi=(300,300))
     #compose qr code on top of background troplet
-    im1 = Image.open('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/inky-losaurus.png')
-    im2 = Image.open('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/wow.png')
+    im1 = Image.open(data['directory-path'] + "/inky-losaurus.png")
+    im2 = Image.open(data['directory-path'] + "/wow.png")
     newsize = (122, 122)
     im3 = im2.resize(newsize)
     im1.paste(im3, (0,0), mask = im3)
-    im1.save('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/666.png',dpi=(300,300))
-    img = Image.open('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/666.png')
+    im1.save(data['directory-path'] + "/final.png",dpi=(300,300))
+    img = Image.open(data['directory-path'] + "/final.png")
     draw = ImageDraw.Draw(img)
     # add text to background-droplet
-    font = ImageFont.truetype(r'/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/ARIAL.TTF', 30)
+    font = ImageFont.truetype(data['directory-path'] + "/ARIAL.TTF", 30)
 
     draw.text((20, 0), time_info)
 
@@ -99,10 +90,16 @@ def get_compose_image(board_info, time_info, current_price_info, pihole_stats):
     draw.text((120, 110), (str(pihole_stats["status"] + " >" + str(pihole_stats["unique_clients"]))))
     draw.text((20, 110), board_info["ip_address"])
     draw.text((120, 60), "" + current_price_info + "€", font = font)
-    img.save("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/666.png")
+    img.save(data['directory-path'] + "/final.png")
     # rotate image
-    Original_Image = Image.open("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/666.png")
-    rotated_image_info = Original_Image.transpose(Image.ROTATE_180)
+    Original_Image = Image.open(data['directory-path'] + "/final.png")
+
+    if data['flipped'] == "true":
+        rotated_image_info = Original_Image.transpose(Image.ROTATE_180)
+        
+    else: 
+        rotated_image_info = Original_Image
+
     
     return rotated_image_info
 
@@ -120,6 +117,5 @@ if __name__ == "__main__":
     data = read_config()
     pihole_stats = get_pihole_stats(board_info)
     current_price_info = get_crypto_ticker(data)
-    rotated_image_info = get_compose_image(board_info, time_info, current_price_info, pihole_stats)
+    rotated_image_info = get_compose_image(board_info, time_info, current_price_info, pihole_stats, data)
     display_info(rotated_image_info)
-    get_config(pihole_stats, time_info)
