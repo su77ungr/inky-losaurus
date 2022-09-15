@@ -55,23 +55,17 @@ Make sure the above path is pointing to the folder you've downloaded the code to
 
 Make sure cron.service is enabled by running  `sudo systemctl enable cron && sudo systemctl start cron`
 ## Config
-- To flip the display add the below argument;
-
-```
---flip true
-```
-    
-```
---ticker true
-```
-
-- Select flag to select alternative Coin/Currency
-
-```
---ticker-currency BTC-USD # ETH-EUR etc.
-```
+- To edit argument change values 
 
 
 ```
---pair adagbp
+{
+    "directory-path": "/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/",
+    "ticker-enabled": "true",
+    "flipped": "true",
+    "topic": "config file",
+    "version": "Inky-losaurus V.0.1",
+    "x-api-data": "{\"currency\":\"EUR\",\"code\":\"XCH\"}",
+    "x-api-key": "52d21667-5475-4a08-9ed2-2756e79470db"
+}
 ```
