@@ -41,8 +41,8 @@ curl https://get.pimoroni.com/inky | bash
 - Reboot the Pi
 - Clone repo to your home directory
 ```
-git clone https://github.com/su77ungr/inky-losaurus.git
-
+git clone https://github.com/su77ungr/inky-losaurus.git \
+cd inky-losaurus \
 sudo pip install -r requirements.txt
 
 ```
