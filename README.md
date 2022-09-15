@@ -23,6 +23,12 @@
   <a href="https://www.livecoinwatch.com/tools/api#try"><style="height:100px">get API key</a>
   <br>
 
+## Table of contents
+* [Requirements](#requirements)
+* [Setup](#setup)
+* [Config](#config)
+
+
 ## Hardware required
 
 - Raspberry Pi (running on Zero W and 4B)
@@ -39,3 +45,42 @@ You can also deploy in the traditional manner using the balena CLI and `balena p
 ## Customization
 
 ![inky-losaurus](https://user-images.githubusercontent.com/69374354/190515235-84974961-f46f-4417-b627-bd83541c6267.png)
+
+
+## Requirements
+- Raspberry Pi
+- Inky pHAT e-ink display
+
+## Setup
+- SSH onto Pi
+- Install the Inky pHAT libary on the command line
+```
+curl https://get.pimoroni.com/inky | bash
+```
+- Reboot the Pi
+- Download the bitcoin_ticker code to any your home directory
+```
+git clone https://github.com/naviavia/bitcoin_ticker.git
+```
+- Edit cron jobs
+```
+crontab -e
+```
+- Add the below entry (5 represents the frequency of the task e.g. updating to 1 will run every minute)
+```
+*/5 * * * * python3 /home/pi/bitcoin_ticker/bitcoin.py
+```
+Make sure the above path is pointing to the folder you've downloaded the code to
+
+## Config
+- To flip the display add the below argument;
+
+```
+--flip true
+```
+
+- To use an alternative Coin/Currency enter the pair & currency below e.g. ADA - GBP. This is based on available pairs on Kraken.
+
+```
+--pair adagbp
+```
