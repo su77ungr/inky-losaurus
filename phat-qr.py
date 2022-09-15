@@ -35,7 +35,7 @@ def get_crypto_ticker():
     return current_price_info
 
 def get_pihole_stats(board_info):
-    api_path = f"http://192.168.2.228/admin/api.php?summary"
+    api_path = "http://" + board_info["ip_address"] + "/admin/api.php?summary"
     pihole_stats = dict()
     query_fields = ["unique_clients", "dns_queries_today", "ads_blocked_today", "ads_percentage_today"]
     try:
