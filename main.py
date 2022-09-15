@@ -5,6 +5,27 @@ from inky.auto import auto
 from inky import InkyPHAT
 from requests.structures import CaseInsensitiveDict
 
+def get_config(pihole_stats, time_info):
+
+    general_info = {
+    "pihole" : pihole_stats["status"],
+    "x-api-key" : "52d21667-5475-4a08-9ed2-2756e79470db" ,
+    "x-api-data" : '{"currency":"EUR","code":"XCH","meta":false}',
+    "topic" : "config file",
+    "version" : "Inky-losaurus V.0.1"
+    }
+    myJSON = json.dumps(general_info)
+    with open("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/config.json", "w") as jsonfile:
+        jsonfile.write(myJSON)
+        print("Config.json write successful")
+
+def read_config():
+    with open("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/config.json", "r") as jsonfile:
+        data = json.load(jsonfile) # Reading the file
+        print("Read successful")
+        jsonfile.close()
+    return data
+
 def get_board_info():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
@@ -18,12 +39,13 @@ def get_time():
     time_info = "%s/%s//%s:%s:%s" % (e.day, e.month, e.hour, e.minute, e.second)
     return time_info
 
-def get_crypto_ticker():
+def get_crypto_ticker(data):
     url="https://api.livecoinwatch.com/coins/single"
     headers = CaseInsensitiveDict()
     headers["content-type"]="application/json"
-    headers["x-api-key"] = "52d21667-5475-4a08-9ed2-2756e79470db"
-    data = '{"currency":"EUR","code":"XCH","meta":false}'
+
+    headers["x-api-key"] = data['x-api-key']
+    data = data['x-api-data']
     resp = requests.post(url, headers=headers, data=data)
     data = json.loads(resp.text)
     parseData = json.dumps(resp.json())
@@ -58,7 +80,7 @@ def get_compose_image(board_info, time_info, current_price_info, pihole_stats):
     # (120, 120)
     img.save('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/wow.png', dpi=(300,300))
     #compose qr code on top of background troplet
-    im1 = Image.open('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/inky-bcs.png')
+    im1 = Image.open('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/inky-losaurus.png')
     im2 = Image.open('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/wow.png')
     newsize = (122, 122)
     im3 = im2.resize(newsize)
@@ -67,7 +89,7 @@ def get_compose_image(board_info, time_info, current_price_info, pihole_stats):
     img = Image.open('/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/666.png')
     draw = ImageDraw.Draw(img)
     # add text to background-droplet
-    font = ImageFont.truetype(r'/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/ARIAL.TTF', 40)
+    font = ImageFont.truetype(r'/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/ARIAL.TTF', 30)
 
     draw.text((20, 0), time_info)
 
@@ -76,7 +98,7 @@ def get_compose_image(board_info, time_info, current_price_info, pihole_stats):
     draw.text((120, 100), (str("Percent" + "   >" + str(pihole_stats["ads_percentage_today"]))))
     draw.text((120, 110), (str(pihole_stats["status"] + " >" + str(pihole_stats["unique_clients"]))))
     draw.text((20, 110), board_info["ip_address"])
-    draw.text((120, 40), current_price_info, font = font)
+    draw.text((120, 60), "" + current_price_info + "€", font = font)
     img.save("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/666.png")
     # rotate image
     Original_Image = Image.open("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/images/666.png")
@@ -91,10 +113,13 @@ def display_info(rotated_image_info):
     inky_display.set_image(rotated_image_info)
     inky_display.show()
 
+
 if __name__ == "__main__":
     board_info = get_board_info()
     time_info = get_time()
+    data = read_config()
     pihole_stats = get_pihole_stats(board_info)
-    current_price_info = get_crypto_ticker()
+    current_price_info = get_crypto_ticker(data)
     rotated_image_info = get_compose_image(board_info, time_info, current_price_info, pihole_stats)
     display_info(rotated_image_info)
+    get_config(pihole_stats, time_info)
