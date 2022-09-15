@@ -42,6 +42,9 @@ curl https://get.pimoroni.com/inky | bash
 - Clone repo to your home directory
 ```
 git clone https://github.com/su77ungr/inky-losaurus.git
+
+sudo pip install -r requirements.txt
+
 ```
 - Edit cron jobs
 ```
