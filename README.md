@@ -32,12 +32,13 @@
 - **Optional:** Cryptocurrency Ticker <a href="https://www.livecoinwatch.com/tools/api#try">get API key</a>
 
 
-## Setup
-- Run the following script to install the Inky pHAT libary & Inky-losaurus li brary 
+## One-Step Automated Install
+- Those who want to get started quickly and conveniently may install Inky-losaurus using the following command:
 ```
 sudo curl https://raw.githubusercontent.com/su77ungr/inky-losaurus/main/inky-install.sh | bash
 ```
 - Reboot the Pi
+
 
 Make sure cron.service is enabled by running  `sudo systemctl enable cron && sudo systemctl start cron`
 ## Config

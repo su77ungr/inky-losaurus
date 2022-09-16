@@ -25,4 +25,3 @@ rm mycron
 rm path.yml
 echo "Setup complete -> edit config.json to change parameters to your liking!"
 echo $(cat config.json | jq .version)
-echo "setup finished - have a great day (～￣▽￣)～"
