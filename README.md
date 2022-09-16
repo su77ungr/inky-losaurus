@@ -33,7 +33,7 @@
 
 
 ## Setup
-- Install the Inky pHAT libary on the command line
+- Run the following script to install the Inky pHAT libary & Inky-losaurus li brary 
 ```
 sudo curl https://raw.githubusercontent.com/su77ungr/inky-losaurus/main/inky-install.sh | bash
 ```
