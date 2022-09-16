@@ -29,7 +29,6 @@
 - Raspberry Pi (running on Zero W and 4B)
 - [Pimoroni InkyPHAT display](https://shop.pimoroni.com/products/inky-phat?variant=12549254938707)
 - Pi-hole installation running on default ports
-- **Optional:** 3D printed case with [micro USB sockets](https://www.aliexpress.com/item/4000484202812.html)
 - **Optional:** Cryptocurrency Ticker <a href="https://www.livecoinwatch.com/tools/api#try">get API key</a>
 
 
