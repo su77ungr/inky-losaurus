@@ -35,26 +35,9 @@
 ## Setup
 - Install the Inky pHAT libary on the command line
 ```
-curl https://get.pimoroni.com/inky | bash
+sudo curl https://raw.githubusercontent.com/su77ungr/inky-losaurus/main/inky-install.sh | bash
 ```
 - Reboot the Pi
-- Clone repo to your home directory
-```
-git clone https://github.com/su77ungr/inky-losaurus.git \
-cd inky-losaurus \
-sudo pip install -r requirements.txt
-
-```
-
-- Edit cron jobs
-```
-crontab -e
-```
-- Add the below entry to auto-run script every three minutes
-```
-*/3 * * * * python3 /home/pi/inky-losaurus/main.py
-```
-Make sure the above path is pointing to the folder you've downloaded the code to
 
 Make sure cron.service is enabled by running  `sudo systemctl enable cron && sudo systemctl start cron`
 ## Config
@@ -62,9 +45,10 @@ Make sure cron.service is enabled by running  `sudo systemctl enable cron && sud
 
 ```
 {
-    "directory-path": "/home/pi/inky-losaurus/resources",
-    "ticker-enabled": "true",
-    "flipped": "true",
+    "directory_path": "/home/kube-worker-1/inky-losaurus/resources/",
+    "display_flipped": "true",
+    "pihole_enabled": "true",
+    "ticker_enabled": "true",
     "topic": "config file",
     "version": "Inky-losaurus V.0.1",
     "x-api-data": "{\"currency\":\"EUR\",\"code\":\"XCH\"}",
