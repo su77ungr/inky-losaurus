@@ -11,11 +11,24 @@ def read_config():
     abspath(getsourcefile(lambda:1))
     Str = str(abspath(getsourcefile(lambda:0)))
     l = len(Str)
-    directory = Str[:l-7]
-    print(directory)
-    with open(directory + "config.json", "r") as jsonfile:
+    directory = Str[:l-8]
+    path = str(directory + "/resources/")
+
+    with open(directory + "/config.json", "r") as jsonfile:
         data = json.load(jsonfile) # Reading the file
-        print("Read successful")
+        jsonfile.close()
+    
+    data['directory_path'] = path # Updating, before it was 11/09/2020
+    print("Path directory updated to" + directory)
+    with open(directory + "/config.json", "w") as jsonfile:
+        myJSON = json.dump(data, jsonfile, sort_keys=True, indent=4) # Writing to the file
+        print("Write successful")
+        jsonfile.close()
+
+
+    with open(directory + "/config.json", "r") as jsonfile:
+        data = json.load(jsonfile) # Reading the file
+        print("Parsing config.json successful")
         jsonfile.close()
 
     return data
@@ -35,7 +48,7 @@ def get_time():
 
 def get_crypto_ticker(data):
 
-    if data['ticker-enabled'] == "true":
+    if data['ticker_enabled'] == "true":
         url="https://api.livecoinwatch.com/coins/single"
         headers = CaseInsensitiveDict()
         headers["content-type"]="application/json"
@@ -48,7 +61,6 @@ def get_crypto_ticker(data):
         B = priceObj["rate"]
         Z = round(B, 3)
         current_price_info = str(Z)
-        print(current_price_info)
 
     else: 
         current_price_info = str("\^o^/")
@@ -77,18 +89,18 @@ def get_compose_image(board_info, time_info, current_price_info, pihole_stats, d
     print(pihole_stats["ads_blocked_today"])
     # <class 'qrcode.image.pil.PilImage'>
     # (120, 120)
-    img.save(data['directory-path'] + "/qr.png", dpi=(300,300))
+    img.save(data['directory_path'] + "/qr.png", dpi=(300,300))
     #compose qr code on top of background troplet
-    im1 = Image.open(data['directory-path'] + "/inky-losaurus.png")
-    im2 = Image.open(data['directory-path'] + "/qr.png")
+    im1 = Image.open(data['directory_path'] + "/inky-losaurus.png")
+    im2 = Image.open(data['directory_path'] + "/qr.png")
     newsize = (122, 122)
     im3 = im2.resize(newsize)
     im1.paste(im3, (0,0), mask = im3)
-    im1.save(data['directory-path'] + "/final.png",dpi=(300,300))
-    img = Image.open(data['directory-path'] + "/final.png")
+    im1.save(data['directory_path'] + "/final.png",dpi=(300,300))
+    img = Image.open(data['directory_path'] + "/final.png")
     draw = ImageDraw.Draw(img)
     # add text to background-droplet
-    font = ImageFont.truetype(data['directory-path'] + "/ARIAL.TTF", 30)
+    font = ImageFont.truetype(data['directory_path'] + "/ARIAL.TTF", 30)
 
     draw.text((20, 0), time_info)
 
@@ -98,11 +110,11 @@ def get_compose_image(board_info, time_info, current_price_info, pihole_stats, d
     draw.text((120, 110), (str(pihole_stats["status"] + " >" + str(pihole_stats["unique_clients"]))))
     draw.text((20, 110), board_info["ip_address"])
     draw.text((120, 60), "" + current_price_info + "€", font = font)
-    img.save(data['directory-path'] + "/final.png")
+    img.save(data['directory_path'] + "/final.png")
     # rotate image
-    Original_Image = Image.open(data['directory-path'] + "/final.png")
+    Original_Image = Image.open(data['directory_path'] + "/final.png")
 
-    if data['flipped'] == "true":
+    if data['display_flipped'] == "true":
         rotated_image_info = Original_Image.transpose(Image.ROTATE_180)
         
     else: 
