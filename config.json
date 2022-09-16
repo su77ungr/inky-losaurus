@@ -1,6 +1,7 @@
 {
-    "directory-path": "/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/",
+    "directory-path": "/home/kube-worker-1/Pimoroni/inky/examples/phat/inky-losaurus/resources",
     "ticker-enabled": "true",
+    "pihole-enabled": "true",
     "flipped": "true",
     "topic": "config file",
     "version": "Inky-losaurus V.0.1",

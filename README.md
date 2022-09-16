@@ -20,7 +20,7 @@
    
 <br> 
 
-    ヾ(＠⌒ー⌒＠)ノ
+> NICE TO KNOW: QR code redirects to your pi-hole admin page ヾ(＠⌒ー⌒＠)ノ
   
  
 ## Requirements
@@ -45,6 +45,18 @@ cd inky-losaurus \
 sudo pip install -r requirements.txt
 
 ```
+
+- Edit main.py so your path to the config file is absolute
+
+```
+def read_config():
+    with open("/home/kube-worker-1/Pimoroni/inky/examples/phat/inky-losaurus/config.json", "r") as jsonfile:
+        data = json.load(jsonfile) # Reading the file
+        print("Read successful")
+        jsonfile.close()
+    return data
+```
+
 - Edit cron jobs
 ```
 crontab -e
@@ -61,7 +73,7 @@ Make sure cron.service is enabled by running  `sudo systemctl enable cron && sud
 
 ```
 {
-    "directory-path": "/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/",
+    "directory-path": "/home/pi/inky-losaurus/resources",
     "ticker-enabled": "true",
     "flipped": "true",
     "topic": "config file",
@@ -72,7 +84,7 @@ Make sure cron.service is enabled by running  `sudo systemctl enable cron && sud
 ```
 - with following options: 
 
-> "directory-path": "/home/pi/inky-losaurus/", `/home/m1000/inky-losaurus` <br><br>
+> "directory-path": "/home/pi/inky-losaurus/resources", `/home/m1000/inky-losaurus/resources` <br><br>
 > "ticker-enabled": "true", `false` <br><br>
 > "flipped": "true", `false` <br><br>
 > "x-api-data": "{\"currency\":\"EUR\",\"code\":\"XCH\"}"  `{\"currency\":\"USD\",\"code\":\"SOL\"}`  <br><br>

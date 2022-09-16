@@ -4,12 +4,20 @@ from font_fredoka_one import FredokaOne
 from inky.auto import auto
 from inky import InkyPHAT
 from requests.structures import CaseInsensitiveDict
+from inspect import getsourcefile
+from os.path import abspath
 
 def read_config():
-    with open("/home/kube-worker-1/Pimoroni/inky/examples/phat/resources/config.json", "r") as jsonfile:
+    abspath(getsourcefile(lambda:1))
+    Str = str(abspath(getsourcefile(lambda:0)))
+    l = len(Str)
+    directory = Str[:l-7]
+    print(directory)
+    with open(directory + "config.json", "r") as jsonfile:
         data = json.load(jsonfile) # Reading the file
         print("Read successful")
         jsonfile.close()
+
     return data
 
 def get_board_info():
@@ -69,10 +77,10 @@ def get_compose_image(board_info, time_info, current_price_info, pihole_stats, d
     print(pihole_stats["ads_blocked_today"])
     # <class 'qrcode.image.pil.PilImage'>
     # (120, 120)
-    img.save(data['directory-path'] + "/wow.png", dpi=(300,300))
+    img.save(data['directory-path'] + "/qr.png", dpi=(300,300))
     #compose qr code on top of background troplet
     im1 = Image.open(data['directory-path'] + "/inky-losaurus.png")
-    im2 = Image.open(data['directory-path'] + "/wow.png")
+    im2 = Image.open(data['directory-path'] + "/qr.png")
     newsize = (122, 122)
     im3 = im2.resize(newsize)
     im1.paste(im3, (0,0), mask = im3)
