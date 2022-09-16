@@ -46,17 +46,6 @@ sudo pip install -r requirements.txt
 
 ```
 
-- Edit main.py so your path to the config file is absolute
-
-```
-def read_config():
-    with open("/home/kube-worker-1/Pimoroni/inky/examples/phat/inky-losaurus/config.json", "r") as jsonfile:
-        data = json.load(jsonfile) # Reading the file
-        print("Read successful")
-        jsonfile.close()
-    return data
-```
-
 - Edit cron jobs
 ```
 crontab -e
