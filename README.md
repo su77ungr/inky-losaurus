@@ -57,7 +57,13 @@ Make sure the above path is pointing to the folder you've downloaded the code to
 
 Make sure cron.service is enabled by running  `sudo systemctl enable cron && sudo systemctl start cron`
 ## Config
-- To edit argument change values 
+- Arguments:
+ "ticker-enabled": "true", # "false"
+ "flipped": "true",        # "false"
+ "x-api-data": "{\"currency\":\"EUR\",\"code\":\"XCH\"}" #  "{\"currency\":\"USD\",\"code\":\"SOL\"}"
+ "x-api-key": "52d21667-5475-4a08-9ed2-2756e79470db" # your_api_key
+
+
 
 
 ```
