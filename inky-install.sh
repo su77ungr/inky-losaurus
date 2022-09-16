@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #setup of inky-losaurus
-curl https://get.pimoroni.com/inky | bash \
-git clone https://github.com/su77ungr/inky-losaurus.git \
-cd inky-losaurus \
-sudo pip install -r requirements.txt \
+curl https://get.pimoroni.com/inky | bash &&
+git clone https://github.com/su77ungr/inky-losaurus.git
+cd inky-losaurus 
+sudo pip install -r requirements.txt 
 sudo apt-get install jq -y 
 
 # init first setup to generate config.json
